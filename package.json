@@ -1,0 +1,62 @@
+{
+  "name": "stream-watch",
+  "author": "Kris Reeves",
+  "license": "MIT",
+  "version": "1.0.0",
+  "description": "Track the online status of a stream and configure when and how to act on changes",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/myndzi/stream-watch.git"
+  },
+  "keywords": [
+    "twitch",
+    "stream",
+    "watch"
+  ],
+  "bugs": {
+    "url": "https://github.com/myndzi/stream-watch/issues"
+  },
+  "homepage": "https://github.com/myndzi/stream-watch#readme",
+  "scripts": {
+    "test": "jest",
+    "clean": "rm -rf ./dist/*",
+    "build": "npm run clean && npm run build:esm && npm run build:cjs && cp package.json ./dist/package.json",
+    "build:esm": "tsc -p ./tsconfig.esm.json",
+    "build:cjs": "tsc -p ./tsconfig.cjs.json && echo '{\"type\":\"commonjs\"}' | tee ./dist/cjs/package.json",
+    "prepack": "npm run build"
+  },
+  "type": "module",
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
+  "exports": {
+    "./cjs": {
+      "require": "./cjs/index.js"
+    },
+    "./cjs/*": {
+      "require": "./cjs/*"
+    },
+    "./cjs/policy/*": {
+      "require": "./cjs/policy/*"
+    },
+    ".": {
+      "import": "./index.js"
+    },
+    "./*": {
+      "import": "./*"
+    },
+    "./policy/*": {
+      "import": "./policy/*"
+    }
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "jest": "^30.0.0-alpha.6",
+    "prettier": "^3.2.5",
+    "ts-jest": "^29.2.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}

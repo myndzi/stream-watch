@@ -1,0 +1,12 @@
+{
+  "editor.tabSize": 2,
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/*.code-search": true,
+    "dist": true
+  },
+  "jest.nodeEnv": {
+    "TS_JEST_DISABLE_VER_CHECKER": "true"
+  }
+}
