@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -e
+
+HERE=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+for x in cjs esm; do
+docker run --rm \
+  -v "$HERE/integration-tests/$x:/src" \
+  -v "$PWD/dist:/src/node_modules/stream-watch" \
+  -it node:22-alpine src/index.js
+done

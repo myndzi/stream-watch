@@ -22,8 +22,8 @@
     "clean": "rm -rf ./dist/*",
     "build": "npm run clean && npm run build:esm && npm run build:cjs && cp package.json ./dist/package.json",
     "build:esm": "tsc -p ./tsconfig.esm.json",
-    "build:cjs": "tsc -p ./tsconfig.cjs.json && echo '{\"type\":\"commonjs\"}' | tee ./dist/cjs/package.json",
-    "prepack": "npm run build"
+    "build:cjs": "tsc -p ./tsconfig.cjs.json && echo '{\"type\":\"commonjs\"}' > ./dist/cjs/package.json",
+    "prepack": "npm run build && ./test-esm-cjs"
   },
   "type": "module",
   "main": "./index.js",
