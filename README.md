@@ -6,6 +6,7 @@
     - [Use-case 2: Offline-only channel bot](#use-case-2-offline-only-channel-bot)
   - [Combining unreliable information sources](#combining-unreliable-information-sources)
   - [Initial state](#initial-state)
+- [Importing](#importing)
 - [Basic usage](#basic-usage)
   - [Adding a policy](#adding-a-policy)
 - [API](#api)
@@ -70,6 +71,24 @@ Each listener may be further configured with policies defining how to behave. Fo
 When a Watcher is first initialized, it doesn't know if the stream is online or offline. It begins in the "Unknown" state until the first update it receives tells it what the current state is.
 
 Both `ThrottlePolicy` and `DelayPolicy` have options that alter their behavior on the _first_ transition (from unknown to online / offline) to allow you to configure whether you want to be notified about this initial transition. `ThrottlePolicy` has `notifyOnInitial`, which (when set to `true`) causes an event to be emitted for transitions from "Unknown" to whatever the desired state is. `DelayPolicy` has `noDelayOnInitial`, which (when set to `true`) causes the first event to be emitted immediately instead of after the configured delay.
+
+# Importing
+
+This package is dual-published with both ESM and CJS; both include types. The ESM import path is `stream-watch`, and the CJS import path is `stream-watch/cjs`.
+
+If you are using `{"type": "module"}`, you should use:
+
+```js
+import { Watcher } from 'stream-watch';
+```
+
+If you are using `{"type": "commonjs"}` (or `"type"` is not set), you should use:
+
+```js
+const { Watcher } = require('stream-watch/cjs');
+```
+
+If you see an error to the effect of `Error [ERR_PACKAGE_PATH_NOT_EXPORTED]`, you're likely using the wrong import path for your package setup.
 
 # Basic usage
 
