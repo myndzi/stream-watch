@@ -171,7 +171,6 @@ export class Watcher<Stream> {
       ...opts,
       fn: () => {
         const promise = this.getStreamFn();
-        console.log('logPollResult');
         this.logPollResult(promise);
         return promise;
       },

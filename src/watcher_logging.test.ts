@@ -44,16 +44,12 @@ describe('logging', () => {
 
     do {
       nextResult = results.shift()!;
-      console.log('before', Date.now() - now);
       jest.advanceTimersByTime(9);
       await tick();
-      console.log('after', Date.now() - now, calls.length);
     } while (results.length > 0);
 
-    console.log('before final', Date.now() - now);
     await tick(...promises.splice(0));
     watcher.destroy();
-    console.log('after final', Date.now() - now, calls.length);
     return calls;
   };
 
@@ -347,9 +343,6 @@ describe('logging', () => {
           "1970-01-02T03:46:40.000Z",
           "[StreamWatch]",
           "status updated source=unknown from=Offline to=Online",
-        ],
-        [
-          "logPollResult",
         ],
         [
           "1970-01-02T03:46:40.010Z",
