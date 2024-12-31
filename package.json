@@ -24,18 +24,16 @@
   "scripts": {
     "test": "jest",
     "clean": "rm -rf ./dist/*",
-    "build": "npm run clean && npm run build:esm && npm run build:cjs && cp package.json ./dist/package.json",
+    "build": "npm run clean && npm run build:esm && npm run build:cjs && npm run gen-readme && grep -v \"exit 1\" package.json > ./dist/package.json",
     "build:esm": "tsc -p ./tsconfig.esm.json",
     "build:cjs": "tsc -p ./tsconfig.cjs.json && echo '{\"type\":\"commonjs\"}' > ./dist/cjs/package.json",
     "gen-readme": "partialtongue -i docs/README.md -o dist/README.md --start '//*' --end '*//'$'\\n' && cp dist/README.md ./README.md",
-    "prepack": "npm run build && ./test-esm-cjs && npm run gen-readme"
+    "prepack": "printf '%s\\n\\n' 'use npm run release' && exit 1",
+    "release": "npm run build && ./test-esm-cjs && (cd dist && npm publish)"
   },
   "type": "module",
   "main": "./index.js",
   "types": "./index.d.ts",
-  "files": [
-    "dist/**/*"
-  ],
   "exports": {
     "./cjs": {
       "require": "./cjs/index.js"
