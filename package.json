@@ -28,7 +28,7 @@
     "build:esm": "tsc -p ./tsconfig.esm.json",
     "build:cjs": "tsc -p ./tsconfig.cjs.json && echo '{\"type\":\"commonjs\"}' > ./dist/cjs/package.json",
     "gen-readme": "partialtongue -i docs/README.md -o dist/README.md --start '//*' --end '*//'$'\\n' && cp dist/README.md ./README.md",
-    "prepack": "npm run build && ./test-esm-cjs && gen-readme"
+    "prepack": "npm run build && ./test-esm-cjs && npm run gen-readme"
   },
   "type": "module",
   "main": "./index.js",
