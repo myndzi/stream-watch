@@ -2,7 +2,7 @@
   "name": "stream-watch",
   "author": "Kris Reeves",
   "license": "MIT",
-  "version": "0.1.0-pre.0",
+  "version": "0.1.0-pre.1",
   "description": "Track the online status of a stream and configure when and how to act on changes",
   "repository": {
     "type": "git",
