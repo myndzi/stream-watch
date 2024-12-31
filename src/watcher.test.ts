@@ -135,9 +135,14 @@ describe('Watcher', () => {
         offlineCalls.push(undef);
       }) as any);
 
-      await runMockPolling(['test', 'test', null, null, 'test']);
+      // unknown -> online  : notify
+      // online  -> offline : notify
+      // offline -> offline : ignore
+      // offline -> online  : notify
+      // online  -> online : ignore
+      await runMockPolling(['test1', null, null, 'test2', 'test3']);
 
-      expect(onlineCalls).toEqual(['test', 'test']);
+      expect(onlineCalls).toEqual(['test1', 'test2']);
       expect(offlineCalls).toEqual([undefined]);
     });
 

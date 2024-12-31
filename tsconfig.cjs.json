@@ -6,7 +6,9 @@
     "module": "CommonJS",
     "moduleResolution": "Node",
     "outDir": "./dist/cjs",
-    "declarationDir": "./dist/cjs"
+    "declarationDir": "./dist/cjs",
+    "paths": {}
   },
-  "exclude": ["src/**/*.test.ts"]
+  "exclude": ["src/**/*.test.ts", "docs/**"],
+  "include": ["src/**/*.ts"]
 }

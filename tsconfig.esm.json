@@ -5,7 +5,9 @@
     "target": "ES2022",
     "esModuleInterop": true,
     "outDir": "./dist",
-    "declarationDir": "./dist"
+    "declarationDir": "./dist",
+    "paths": {}
   },
-  "exclude": ["src/**/*.test.ts"]
+  "exclude": ["src/**/*.test.ts", "docs/**"],
+  "include": ["src/**/*.ts"]
 }

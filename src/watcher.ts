@@ -22,9 +22,11 @@ export type StreamStatus<Stream> =
     }
   | {
       status: StreamState.Offline;
+      stream?: undefined;
     }
   | {
       status: StreamState.Unknown;
+      stream?: undefined;
     };
 
 export type WatcherOpts<Stream> = {

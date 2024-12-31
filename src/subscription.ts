@@ -6,6 +6,7 @@ export type SubscriptionType = 'online' | 'offline' | 'change';
 export type SubscriptionStatus =
   | {
       state: StreamState.Unknown | StreamState.Online | StreamState.Offline;
+      remaining?: undefined;
     }
   | {
       state: StreamState.PendingOnline | StreamState.PendingOffline;
