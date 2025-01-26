@@ -1,8 +1,8 @@
 {
   "name": "stream-watch",
-  "author": "Kris Reeves",
+  "author": "Kristopher Reeves",
   "license": "MIT",
-  "version": "0.1.0-pre.2",
+  "version": "1.0.0",
   "description": "Track the online status of a stream and configure when and how to act on changes",
   "repository": {
     "type": "git",
@@ -24,7 +24,7 @@
   "scripts": {
     "test": "jest",
     "clean": "rm -rf ./dist/*",
-    "build": "npm run clean && npm run build:esm && npm run build:cjs && npm run gen-readme && grep -v \"exit 1\" package.json > ./dist/package.json",
+    "build": "npm run clean && npm run build:esm && npm run build:cjs && npm run gen-readme && grep -v \"exit 1\" package.json > ./dist/package.json && cp ./LICENSE ./dist/LICENSE",
     "build:esm": "tsc -p ./tsconfig.esm.json",
     "build:cjs": "tsc -p ./tsconfig.cjs.json && echo '{\"type\":\"commonjs\"}' > ./dist/cjs/package.json",
     "gen-readme": "partialtongue -i docs/README.md -o dist/README.md --start '//*' --end '*//'$'\\n' && cp dist/README.md ./README.md",
