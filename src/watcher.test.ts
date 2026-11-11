@@ -1,10 +1,11 @@
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { ThrottlePolicy } from './policy/throttle.js';
 import { Duration } from './util.js';
 import { StreamState, StreamStatus, Watcher } from './watcher.js';
 
 const tick = () => {
   const p = new Promise(process.nextTick);
-  jest.advanceTimersByTime(1);
+  vi.advanceTimersByTime(1);
   return p;
 };
 
@@ -24,7 +25,7 @@ describe('Watcher', () => {
     it('stops polling when destroyed', async () => {
       let called = false;
 
-      jest.useFakeTimers();
+      vi.useFakeTimers();
       let watcher = new Watcher({
         getStream: () => {
           called = true;
@@ -34,7 +35,7 @@ describe('Watcher', () => {
       watcher.poll({ every: Duration.ms(10) });
 
       watcher.destroy();
-      jest.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
       await tick();
 
       expect(called).toEqual(false);
@@ -48,7 +49,7 @@ describe('Watcher', () => {
       });
       watcher.poll({ every: Duration.ms(10) });
 
-      jest.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
       await tick();
 
       expect(called).toEqual(true);
@@ -57,10 +58,10 @@ describe('Watcher', () => {
 
   describe('polling', () => {
     beforeEach(() => {
-      jest.useFakeTimers();
+      vi.useFakeTimers();
     });
     afterEach(() => {
-      jest.useRealTimers();
+      vi.useRealTimers();
     });
 
     const mockWatcher = () => {
@@ -77,13 +78,13 @@ describe('Watcher', () => {
 
           receivedStatuses.push(watcher.getStatus());
 
-          jest.advanceTimersByTime(9);
+          vi.advanceTimersByTime(9);
         } while (statuses.length > 0);
 
         await tick();
 
         stopPoll();
-        jest.advanceTimersByTime(1000);
+        vi.advanceTimersByTime(1000);
         await tick();
 
         receivedStatuses.push(watcher.getStatus());

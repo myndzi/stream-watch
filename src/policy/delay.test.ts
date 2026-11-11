@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { Duration } from '../util.js';
 import { DelayPolicy } from './delay.js';
 

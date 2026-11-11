@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { Notifier } from './notifier.js';
 import { DelayPolicy } from './policy/delay.js';
 import { Subscription, SubscriptionStatus } from './subscription.js';
@@ -6,7 +7,7 @@ import { StreamState } from './watcher.js';
 
 const tick = () => {
   const p = new Promise(process.nextTick);
-  jest.advanceTimersByTime(1);
+  vi.advanceTimersByTime(1);
   return p;
 };
 describe('subscription', () => {
@@ -66,11 +67,11 @@ describe('subscription', () => {
 
   describe('with delay policy', () => {
     beforeEach(() => {
-      jest.useFakeTimers();
+      vi.useFakeTimers();
     });
 
     afterEach(() => {
-      jest.useRealTimers();
+      vi.useRealTimers();
     });
 
     const noop = () => {};
@@ -87,7 +88,7 @@ describe('subscription', () => {
 
       for (const [fn, expected] of changes) {
         fn(notifier);
-        jest.advanceTimersByTime(4);
+        vi.advanceTimersByTime(4);
         await tick();
         expect(sub.status()).toMatchObject(expected);
       }
@@ -105,7 +106,7 @@ describe('subscription', () => {
 
       for (const [fn, expected] of changes) {
         fn(notifier);
-        jest.advanceTimersByTime(4);
+        vi.advanceTimersByTime(4);
         await tick();
         expect(sub.status()).toMatchObject(expected);
       }
@@ -124,7 +125,7 @@ describe('subscription', () => {
 
       for (const [fn, expected] of changes) {
         fn(notifier);
-        jest.advanceTimersByTime(4);
+        vi.advanceTimersByTime(4);
         await tick();
         expect(sub.status()).toMatchObject(expected);
       }

@@ -1,9 +1,10 @@
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { Poller } from './poller.js';
 import { Duration } from './util.js';
 
 const tick = () => {
   const p = new Promise(process.nextTick);
-  jest.advanceTimersByTime(1);
+  vi.advanceTimersByTime(1);
   return p;
 };
 describe('Poller', () => {
@@ -71,11 +72,11 @@ describe('Poller', () => {
 
   describe('sanity checks', () => {
     beforeEach(() => {
-      jest.useFakeTimers();
+      vi.useFakeTimers();
     });
 
     afterEach(() => {
-      jest.useRealTimers();
+      vi.useRealTimers();
     });
 
     it('avoids overscheduling timers/promises', async () => {
@@ -120,11 +121,11 @@ describe('Poller', () => {
   });
   describe('behavior', () => {
     beforeEach(() => {
-      jest.useFakeTimers();
+      vi.useFakeTimers();
     });
 
     afterEach(() => {
-      jest.useRealTimers();
+      vi.useRealTimers();
     });
 
     it('polls on an interval starting at T+`every` when immediately=false', async () => {
@@ -141,23 +142,23 @@ describe('Poller', () => {
       });
 
       // just before the first interval, minus 1 for the `tick` call
-      jest.advanceTimersByTime(8);
+      vi.advanceTimersByTime(8);
       await tick();
       expect(calls).toEqual(0);
 
       // first poll happens at t+10ms
-      jest.advanceTimersByTime(1);
+      vi.advanceTimersByTime(1);
       expect(calls).toEqual(0);
       await tick(); // but it resolves asynchronously
       expect(calls).toEqual(1); // and after one tick the callback is called
 
       // second poll happens at t+20ms
-      jest.advanceTimersByTime(9); // 1 tick passed above, so 10-1
+      vi.advanceTimersByTime(9); // 1 tick passed above, so 10-1
       await tick(); // but again it resolves asynchronously
       expect(calls).toEqual(2); // so calls = 2 at t+21ms
 
       // verify that "destroy" works even when a promise is in-flight
-      jest.advanceTimersByTime(9);
+      vi.advanceTimersByTime(9);
       // ensure we have our synchronization correct: this is only set for 1 tick in these tests
       expect((p as any).promise).not.toBeUndefined();
 
@@ -166,7 +167,7 @@ describe('Poller', () => {
       p.destroy();
 
       // pass a bunch of time
-      jest.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
       // and at least one tick
       await tick();
 
@@ -188,23 +189,23 @@ describe('Poller', () => {
       });
 
       // just before the first interval, minus 1 for the `tick` call
-      jest.advanceTimersByTime(8);
+      vi.advanceTimersByTime(8);
       await tick();
       expect(calls).toEqual(1);
 
       // first poll happens at t+10ms
-      jest.advanceTimersByTime(1);
+      vi.advanceTimersByTime(1);
       expect(calls).toEqual(1);
       await tick(); // but it resolves asynchronously
       expect(calls).toEqual(2); // and after one tick the callback is called
 
       // second poll happens at t+20ms
-      jest.advanceTimersByTime(9); // 1 tick passed above, so 10-1
+      vi.advanceTimersByTime(9); // 1 tick passed above, so 10-1
       await tick(); // but again it resolves asynchronously
       expect(calls).toEqual(3); // so calls = 3 at t+21ms
 
       // verify that "destroy" works even when a promise is in-flight
-      jest.advanceTimersByTime(9);
+      vi.advanceTimersByTime(9);
       // ensure we have our synchronization correct: this is only set for 1 tick in these tests
       expect((p as any).promise).not.toBeUndefined();
 
@@ -213,7 +214,7 @@ describe('Poller', () => {
       p.destroy();
 
       // pass a bunch of time
-      jest.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
       // and at least one tick
       await tick();
 
@@ -221,8 +222,8 @@ describe('Poller', () => {
     });
 
     it("doesn't crash if the promise fails", async () => {
-      // disable console error output in jest
-      jest.spyOn(console, 'error').mockImplementation(jest.fn());
+      // disable console error output in tests
+      vi.spyOn(console, 'error').mockImplementation(vi.fn());
 
       let calls = 0;
 
@@ -237,23 +238,23 @@ describe('Poller', () => {
       });
 
       // just before the first interval, minus 1 for the `tick` call
-      jest.advanceTimersByTime(8);
+      vi.advanceTimersByTime(8);
       await tick();
       expect(calls).toEqual(0);
 
       // first poll happens at t+10ms
-      jest.advanceTimersByTime(1);
+      vi.advanceTimersByTime(1);
       expect(calls).toEqual(0);
       await tick(); // but it resolves asynchronously
       expect(calls).toEqual(0); // and after one tick the callback is called
 
       // second poll happens at t+20ms
-      jest.advanceTimersByTime(9); // 1 tick passed above, so 10-1
+      vi.advanceTimersByTime(9); // 1 tick passed above, so 10-1
       await tick(); // but again it resolves asynchronously
       expect(calls).toEqual(0); // so calls = 2 at t+21ms
 
       // verify that "destroy" works even when a promise is in-flight
-      jest.advanceTimersByTime(9);
+      vi.advanceTimersByTime(9);
       // ensure we have our synchronization correct: this is only set for 1 tick in these tests
       expect((p as any).promise).not.toBeUndefined();
 
@@ -262,7 +263,7 @@ describe('Poller', () => {
       p.destroy();
 
       // pass a bunch of time
-      jest.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
       // and at least one tick
       await tick();
 

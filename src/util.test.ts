@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { defaultHumanizer, defaultLogger, Duration } from './util.js';
 
 describe('defaultHumanizer', () => {
@@ -28,23 +29,23 @@ describe('defaultHumanizer', () => {
 
 describe('defaultLogger', () => {
   beforeEach(() => {
-    jest.useFakeTimers();
+    vi.useFakeTimers();
   });
   afterEach(() => {
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
   it('logs info to stdout', () => {
-    jest.useFakeTimers();
+    vi.useFakeTimers();
     const ts = new Date().toISOString();
-    const mock = jest.spyOn(console, 'log');
+    const mock = vi.spyOn(console, 'log');
     defaultLogger.info('hi');
     expect(mock).toHaveBeenCalledWith(ts, '[StreamWatch]', 'hi');
     mock.mockRestore();
   });
   it('logs error to stderr', () => {
-    jest.useFakeTimers();
+    vi.useFakeTimers();
     const ts = new Date().toISOString();
-    const mock = jest.spyOn(console, 'error');
+    const mock = vi.spyOn(console, 'error');
     defaultLogger.error('hi');
     expect(mock).toHaveBeenCalledWith(ts, '[StreamWatch]', 'hi');
     mock.mockRestore();

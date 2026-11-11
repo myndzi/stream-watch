@@ -4,7 +4,8 @@
     "lib": ["ES6"],
     "target": "ES6",
     "module": "CommonJS",
-    "moduleResolution": "Node",
+    "moduleResolution": "Bundler",
+    "rootDir": "./src",
     "outDir": "./dist/cjs",
     "declarationDir": "./dist/cjs",
     "paths": {}

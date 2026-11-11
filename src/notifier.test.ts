@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { Notifier } from './notifier.js';
 import { DelayPolicy } from './policy/delay.js';
 import { ThrottlePolicy } from './policy/throttle.js';
@@ -52,10 +53,10 @@ describe('notifier', () => {
 
   describe('notifications', () => {
     beforeEach(() => {
-      jest.useFakeTimers();
+      vi.useFakeTimers();
     });
     afterEach(() => {
-      jest.useRealTimers();
+      vi.useRealTimers();
     });
 
     it('rejects duplicate trigger/clear conditions', () => {
@@ -87,18 +88,18 @@ describe('notifier', () => {
       expect(notifier.trigger('foo')).toEqual(0); // should trigger
       expect(notifier.clear()).toEqual(true);
 
-      jest.advanceTimersByTime(9);
+      vi.advanceTimersByTime(9);
       expect(notifier.trigger('foo')).toEqual(0); // should trigger
       expect(notifier.clear()).toEqual(true);
 
-      jest.advanceTimersByTime(1);
+      vi.advanceTimersByTime(1);
       expect(notifier.trigger('foo')).toEqual(0); // should trigger
       expect(notifier.clear()).toEqual(true);
 
       expect(notifier.trigger('foo')).toEqual(0); // should trigger
       expect(notifier.clear()).toEqual(true);
 
-      jest.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
 
       expect(calls).toEqual(5);
     });
@@ -122,18 +123,18 @@ describe('notifier', () => {
       expect(notifier.trigger('foo')).toEqual(0); // should trigger
       expect(notifier.clear()).toEqual(true);
 
-      jest.advanceTimersByTime(9);
+      vi.advanceTimersByTime(9);
       expect(notifier.trigger('foo')).toEqual(null);
       expect(notifier.clear()).toEqual(true);
 
-      jest.advanceTimersByTime(1);
+      vi.advanceTimersByTime(1);
       expect(notifier.trigger('foo')).toEqual(0); // should trigger
       expect(notifier.clear()).toEqual(true);
 
       expect(notifier.trigger('foo')).toEqual(null);
       expect(notifier.clear()).toEqual(true);
 
-      jest.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
 
       expect(calls).toEqual(2);
     });
@@ -157,18 +158,18 @@ describe('notifier', () => {
       expect(notifier.trigger('foo')).toEqual(null);
       expect(notifier.clear()).toEqual(true);
 
-      jest.advanceTimersByTime(9);
+      vi.advanceTimersByTime(9);
       expect(notifier.trigger('foo')).toEqual(null);
       expect(notifier.clear()).toEqual(true);
 
-      jest.advanceTimersByTime(1);
+      vi.advanceTimersByTime(1);
       expect(notifier.trigger('foo')).toEqual(0); // should trigger
       expect(notifier.clear()).toEqual(true);
 
       expect(notifier.trigger('foo')).toEqual(null);
       expect(notifier.clear()).toEqual(true);
 
-      jest.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
 
       expect(calls).toEqual(2);
     });
@@ -195,21 +196,21 @@ describe('notifier', () => {
       expect(notifier.clear()).toEqual(true);
 
       // expire the timer - shouldn't have fired
-      jest.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
       expect(calls).toEqual(0);
 
       // event was scheduled (previously was cleared)
       expect(notifier.trigger('foo')).toEqual(10);
 
       // advance to just before the delay - shouldn't have fired
-      jest.advanceTimersByTime(9);
+      vi.advanceTimersByTime(9);
       expect(calls).toEqual(0);
 
       // advance over the threshold - should fire now
-      jest.advanceTimersByTime(1);
+      vi.advanceTimersByTime(1);
       expect(calls).toEqual(1);
 
-      jest.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
       expect(calls).toEqual(1);
     });
 
@@ -234,7 +235,7 @@ describe('notifier', () => {
       expect(notifier.trigger('foo')).toEqual(null);
 
       // there should not have been a timer
-      jest.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
       expect(calls).toEqual(1);
 
       // clear status so we can trigger it again
@@ -244,14 +245,14 @@ describe('notifier', () => {
       expect(notifier.trigger('foo')).toEqual(10);
 
       // advance to just before the delay - shouldn't have fired
-      jest.advanceTimersByTime(9);
+      vi.advanceTimersByTime(9);
       expect(calls).toEqual(1);
 
       // advance over the threshold - should fire now
-      jest.advanceTimersByTime(1);
+      vi.advanceTimersByTime(1);
       expect(calls).toEqual(2);
 
-      jest.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
       expect(calls).toEqual(2);
     });
   });

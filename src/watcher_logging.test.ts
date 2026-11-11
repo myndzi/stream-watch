@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { DelayPolicy } from './policy/delay.js';
 import { ThrottlePolicy } from './policy/throttle.js';
 import { Duration, Logger } from './util.js';
@@ -5,17 +6,17 @@ import { Watcher } from './watcher.js';
 
 const tick = (...promises: Promise<any>[]) => {
   const p = new Promise(process.nextTick);
-  jest.advanceTimersByTime(1);
+  vi.advanceTimersByTime(1);
   return Promise.allSettled([...promises, p]);
 };
 
 describe('logging', () => {
   beforeEach(() => {
-    jest.useFakeTimers();
+    vi.useFakeTimers();
   });
 
   afterEach(() => {
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
 
   const testWatcherSequence = async (results: Promise<string | null>[]): Promise<any[]> => {
@@ -44,7 +45,7 @@ describe('logging', () => {
 
     do {
       nextResult = results.shift()!;
-      jest.advanceTimersByTime(9);
+      vi.advanceTimersByTime(9);
       await tick();
     } while (results.length > 0);
 
@@ -303,12 +304,12 @@ describe('logging', () => {
   });
 
   it('default logger', async () => {
-    jest.setSystemTime(100000000);
+    vi.setSystemTime(100000000);
 
     const promises: Promise<any>[] = [];
 
-    const mockInfo = jest.spyOn(console, 'log');
-    const mockError = jest.spyOn(console, 'error');
+    const mockInfo = vi.spyOn(console, 'log');
+    const mockError = vi.spyOn(console, 'error');
 
     const watcher = new Watcher<string | null>({ logger: true, getStream: () => Promise.reject('failure') });
     (watcher as any).testHook = (promise: Promise<any>) => {
@@ -320,7 +321,7 @@ describe('logging', () => {
     watcher.update('ok'); // no source -> "unknown"
 
     watcher.poll({ every: Duration.ms(10) });
-    jest.advanceTimersByTime(9);
+    vi.advanceTimersByTime(9);
     await tick();
 
     watcher.destroy();
@@ -494,7 +495,7 @@ describe('logging', () => {
 
     // initial state: no notification (throttle)
     watcher.update('hello', 'manual');
-    jest.advanceTimersByTime(10);
+    vi.advanceTimersByTime(10);
     await tick(...promises.splice(0));
 
     expect(calls.splice(0)).toMatchInlineSnapshot(`
@@ -553,7 +554,7 @@ describe('logging', () => {
 
     // initial state: no notification (throttle)
     watcher.update('hello', 'manual');
-    jest.advanceTimersByTime(10);
+    vi.advanceTimersByTime(10);
     await tick(...promises.splice(0));
 
     expect(calls.splice(0)).toMatchInlineSnapshot(`
@@ -591,7 +592,7 @@ describe('logging', () => {
 
     // rapid state change (online): discard (throttled)
     watcher.update(null, 'manual');
-    jest.advanceTimersByTime(1);
+    vi.advanceTimersByTime(1);
     await tick();
     expect(calls.splice(0)).toMatchInlineSnapshot(`
       [
@@ -604,7 +605,7 @@ describe('logging', () => {
       ]
     `);
     watcher.update('hello', 'manual');
-    jest.advanceTimersByTime(100);
+    vi.advanceTimersByTime(100);
     await tick(...promises.splice(0));
     expect(calls.splice(0)).toMatchInlineSnapshot(`
       [
@@ -641,7 +642,7 @@ describe('logging', () => {
 
     // redundant state: no change
     watcher.update('hello', 'manual');
-    jest.advanceTimersByTime(100);
+    vi.advanceTimersByTime(100);
     await tick(...promises.splice(0));
     expect(calls.splice(0)).toMatchInlineSnapshot(`
       [
@@ -666,7 +667,7 @@ describe('logging', () => {
 
     // state change: notify on a delay
     watcher.update(null, 'manual');
-    jest.advanceTimersByTime(100);
+    vi.advanceTimersByTime(100);
     await tick(...promises.splice(0));
     expect(calls.splice(0)).toMatchInlineSnapshot(`
       [
@@ -681,7 +682,7 @@ describe('logging', () => {
 
     // rapid state change (offline): discard (throttled)
     watcher.update('brief', 'manual');
-    jest.advanceTimersByTime(1);
+    vi.advanceTimersByTime(1);
     await tick();
     expect(calls.splice(0)).toMatchInlineSnapshot(`
       [
@@ -705,7 +706,7 @@ describe('logging', () => {
     `);
 
     watcher.update(null, 'manual');
-    jest.advanceTimersByTime(100);
+    vi.advanceTimersByTime(100);
     await tick(...promises.splice(0));
 
     expect(calls.splice(0)).toMatchInlineSnapshot(`
@@ -761,7 +762,7 @@ describe('logging', () => {
 
     // initial state: no notification (throttle)
     watcher.update('hello', 'manual');
-    jest.advanceTimersByTime(10);
+    vi.advanceTimersByTime(10);
     await tick(...promises.splice(0));
 
     expect(calls.splice(0)).toMatchInlineSnapshot(`
@@ -791,7 +792,7 @@ describe('logging', () => {
     // change listeners only: eventually notify the final state,
     // so it's more like a debounce
     watcher.update(null, 'manual');
-    jest.advanceTimersByTime(1);
+    vi.advanceTimersByTime(1);
     await tick();
     expect(calls.splice(0)).toMatchInlineSnapshot(`
       [
@@ -810,7 +811,7 @@ describe('logging', () => {
       ]
     `);
     watcher.update('hello', 'manual');
-    jest.advanceTimersByTime(100);
+    vi.advanceTimersByTime(100);
     await tick(...promises.splice(0));
     expect(calls.splice(0)).toMatchInlineSnapshot(`
       [
@@ -837,7 +838,7 @@ describe('logging', () => {
 
     // redundant state: no change
     watcher.update('hello', 'manual');
-    jest.advanceTimersByTime(100);
+    vi.advanceTimersByTime(100);
     await tick(...promises.splice(0));
     expect(calls.splice(0)).toMatchInlineSnapshot(`
       [
@@ -852,7 +853,7 @@ describe('logging', () => {
 
     // state change: notify on a delay
     watcher.update(null, 'manual');
-    jest.advanceTimersByTime(100);
+    vi.advanceTimersByTime(100);
     await tick(...promises.splice(0));
     expect(calls.splice(0)).toMatchInlineSnapshot(`
       [
@@ -883,7 +884,7 @@ describe('logging', () => {
     // like a debounce and always emit the final value even if
     // it is the same as the last time we emitted something
     watcher.update('brief', 'manual');
-    jest.advanceTimersByTime(1);
+    vi.advanceTimersByTime(1);
     await tick();
     expect(calls.splice(0)).toMatchInlineSnapshot(`
       [
@@ -897,7 +898,7 @@ describe('logging', () => {
     `);
 
     watcher.update(null, 'manual');
-    jest.advanceTimersByTime(100);
+    vi.advanceTimersByTime(100);
     await tick(...promises.splice(0));
 
     expect(calls.splice(0)).toMatchInlineSnapshot(`

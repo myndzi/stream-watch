@@ -6,8 +6,5 @@
     "**/*.code-search": true,
     "dist": true
   },
-  "jest.nodeEnv": {
-    "TS_JEST_DISABLE_VER_CHECKER": "true"
-  },
   "markdown.extension.toc.slugifyMode": "github"
 }

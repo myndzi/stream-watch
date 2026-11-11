@@ -4,6 +4,7 @@
     "lib": ["ES2022"],
     "target": "ES2022",
     "esModuleInterop": true,
+    "rootDir": "./src",
     "outDir": "./dist",
     "declarationDir": "./dist",
     "paths": {}

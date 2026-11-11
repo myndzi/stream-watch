@@ -22,14 +22,14 @@
   },
   "homepage": "https://github.com/myndzi/stream-watch#readme",
   "scripts": {
-    "test": "jest",
+    "test": "vitest run",
     "clean": "rm -rf ./dist/*",
-    "build": "npm run clean && npm run build:esm && npm run build:cjs && npm run gen-readme && grep -v \"exit 1\" package.json > ./dist/package.json && cp ./LICENSE ./dist/LICENSE",
+    "build": "pnpm run clean && pnpm run build:esm && pnpm run build:cjs && pnpm run gen-readme && grep -v \"exit 1\" package.json > ./dist/package.json && cp ./LICENSE ./dist/LICENSE",
     "build:esm": "tsc -p ./tsconfig.esm.json",
     "build:cjs": "tsc -p ./tsconfig.cjs.json && echo '{\"type\":\"commonjs\"}' > ./dist/cjs/package.json",
-    "gen-readme": "partialtongue -i docs/README.md -o dist/README.md --start '//*' --end '*//'$'\\n' && cp dist/README.md ./README.md",
-    "prepack": "printf '%s\\n\\n' 'use npm run release' && exit 1",
-    "release": "npm run build && ./test-esm-cjs && (cd dist && npm publish)"
+    "gen-readme": "partialtongue -i docs/README.md -o dist/README.md --start '//*' --end '*//\n' && cp dist/README.md ./README.md",
+    "prepack": "printf '%s\\n\\n' 'use pnpm run release' && exit 1",
+    "release": "pnpm run build && ./test-esm-cjs && (cd dist && npm publish)"
   },
   "type": "module",
   "main": "./index.js",
@@ -55,16 +55,14 @@
     }
   },
   "devDependencies": {
-    "@twurple/api": "^7.2.1",
-    "@twurple/auth": "^7.2.1",
-    "@twurple/eventsub-ws": "^7.2.1",
-    "@types/jest": "^29.5.14",
-    "jest": "^30.0.0-alpha.6",
+    "@twurple/api": "^8.2.0",
+    "@twurple/auth": "^8.2.0",
+    "@twurple/eventsub-ws": "^8.2.0",
+    "@types/node": "^18.19.130",
     "partialtongue": "^1.0.0",
-    "prettier": "^3.2.5",
-    "ts-jest": "^29.2.5",
-    "ts-node": "^10.9.2",
-    "tsx": "^4.19.2",
-    "typescript": "^5.3.3"
+    "prettier": "^3.9.10",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.0"
   }
 }
